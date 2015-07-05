@@ -1,3 +1,6 @@
+#Overview
+This API uses the Collection+JSON media type.  It supports listing todo items, searching for a todo item and creating, reading, updating and deleting individual items.  
+Consult https://github.com/collection-json/spec for details on the implicit CRUD behaviour for Collection+JSON items.
 ### TODO List Collection
 
 #####Request
@@ -30,10 +33,10 @@ Content-Type: "application/vnd.collection+json"
       {
         "href" : "/search",
         "rel" : "search",
-        "prompt" : "Enter search string",
+        "prompt" : "Enter search string using Lucene query language",
         "data" :
         [
-          {"name" : "search", "value" : ""}
+          {"name" : "name-search", "value" : ""}
         ]
       }
     ],
@@ -82,10 +85,10 @@ Content-Type: "application/vnd.collection+json"
       {
         "href" : "/search",
         "rel" : "search",
-        "prompt" : "Enter search string",
+        "prompt" : "Enter search string using Lucene query language",
         "data" :
         [
-          {"name" : "search", "value" : ""}
+          {"name" : "name-search", "value" : ""}
         ]
       }
     ],
