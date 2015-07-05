@@ -1,4 +1,4 @@
-### Retrieve the TODO List
+### Home Page
 
 #####Request
 `GET /api/todos/ HTTP/1.1`
@@ -6,26 +6,66 @@
 #####Response
 ```
 HTTP/1.1 200 OK
-Content-Type: "application/json"
+Content-Type: "application/hal+json"
 
 {
-"todos" : [
-   { 
-     "id": "1228",
-     "name" : "Get Milk",
-   },
-   { 
-     "id": "1241",
-     "name" : "Make Cake",
-   }
- ]
+    "_links": {
+        "self": { "href": "/api/todos" },
+        "curies": [{ "name": "todo", "href": "http://api.com/docs/rels/{rel}", "templated": true }],
+        "todo:list": {
+            "href": "/api/todos/list"
+        },
+        "todo:get-item": {
+            "href": "/api/todos/item/{id}",
+            "templated": "true",
+            "title": "Todo Item"
+        }
+    }
 }
+```
 
+### List Todos
+
+#####Request
+`GET /api/todos/list HTTP/1.1`
+
+#####Response
+```
+HTTP/1.1 200 OK
+Content-Type: "application/json"
+
+HTTP/1.1 200 OK
+Content-Type: "application/hal+json"
+
+{
+    "_links": {
+        "self": { "href": "/api/todos/list" },
+        "curies": [{ "name": "todo", "href": "http://api.com/docs/rels/{rel}", "templated": true }],
+        "next": { "href": "/api/todos/list?start=2" }
+        "all" : { "href": "/api/todos/list?all" }
+        "todo:get-item": {
+            "href": "/api/todos/item/{id}",
+            "templated": "true",
+            "title": "Todo Item"
+        }
+    },
+    "todos" : [
+      { 
+        "_links": {
+         "self": { "href": "/api/todos/item/1228" },
+        },
+        "name" : "Get Milk",
+        "description": "remember to get milk for cake",
+        "category": "shopping",
+        "owner": "Kai"
+      }
+   ]
+}
 ```
 
 ### Retrieve a TODO item
 #####Request
-`GET /api/todos/14 HTTP/1.1`
+`GET /api/todos/1228 HTTP/1.1`
 
 #####Response
 ```
@@ -33,81 +73,18 @@ HTTP/1.1 200 OK
 Content-Type: "application/json"
 
 {
-"todos" : [
-   { 
-     "id": "1228",
-     "name" : "Get Milk",
-     "description": "remember to get milk for cake",
-     "category": "shopping",
-     "owner": "Kai"
-   }
- ]
-}
-
-```
-
-
-### Add a new TODO item
-
-#####Request
-```
-POST /api/todos/ HTTP/1.1
-
-{ 
-  "name" : "Buy cheese",
-  "description": "remember to buy cheese from the shop",
-  "category": "shopping",
-  "owner": "Kai"
-}
-
-```
-
-#####Response
-```
-HTTP/1.1 201 Created
-Content-Type: "application/json"
-
-{ 
-  "id" : "20089",
-  "name" : "Buy cheese",
-  "description": "remember to buy cheese from the shop",
-  "category": "shopping",
-  "owner": "Kai"
+   "_links": {
+      "self": { "href": "/api/todos/item/1228" },
+      "curies": [{ "name": "todo", "href": "http://api.com/docs/rels/{rel}", "templated": true }],
+      "todo:list": {
+         "href": "/api/todos/list",
+         "title": "Todo Item"
+      }
+   },
+   "name" : "Get Milk",
+   "description": "remember to get milk for cake",
+   "category": "shopping",
+   "owner": "Kai"
 }
 ```
 
-
-### Remove a TODO item
-#####Request
-```
-DELETE /api/todos/{id} HTTP/1.1
-```
-#####Response
-```
-HTTP/1.1 204 No Content
-```
-
-### Replace a TODO item
-#####Request
-```
-PUT /aip/todos/{id} HTTP/1.1
-{ 
-  "name" : "Buy cheese",
-  "description": "remember to buy cheese from the shop",
-  "category": "shopping",
-  "owner": "Kai"
-}
-```
-#####Response
-```
-HTTP/1.1 200 OK
-Content-Type: "application/json"
-
-{ 
-  "id" : "20089"
-  "name" : "Buy cheese",
-  "description": "remember to buy cheese from the shop",
-  "category": "shopping",
-  "owner": "Kai"
-}
-```
